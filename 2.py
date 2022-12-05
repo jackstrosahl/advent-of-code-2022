@@ -43,3 +43,14 @@ for opp_move, res_move in rounds:
     ans += (res_move + 1) + get_round_score(round_outcome[res_move][opp_move])
 
 print(ans)
+
+ans = 0
+for opp_move, res_move in rounds:
+    # Offset from -1 makes Y 0
+    target_outcome = res_move - 1
+    outcomes = round_outcome[opp_move]
+    # Need to invert outcome as outcome for first key in dictionary
+    target_move = next(move for move, outcome in outcomes.items() if outcome*-1 == target_outcome)
+    ans += (target_move + 1) + get_round_score(target_outcome)
+
+print(ans)
