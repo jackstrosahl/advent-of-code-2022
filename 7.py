@@ -59,3 +59,11 @@ for dir, size in dir_sizes.items():
         ans += size
 
 print(ans)
+
+ans = 0
+
+disk_size = 70000000
+update_size = 30000000
+needed_size =  update_size - (disk_size - dir_sizes["/"])
+
+print(min(filter(lambda x:x>=needed_size,dir_sizes.values())))
