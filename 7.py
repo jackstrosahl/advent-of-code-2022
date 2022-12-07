@@ -1,4 +1,4 @@
-with open("7-test.txt") as f:
+with open("7.txt") as f:
     lines = [line.rstrip("\n") for line in f]
 
 root = {}
@@ -21,8 +21,8 @@ for line in lines:
     else:
         ident, name = line.split(" ")
         if ident == "dir":
-            # if name in cur_directory:
-            #     continue
+            if name in cur_directory:
+                continue
             cur_directory[name] = {}
         else:
             cur_directory[name] = int(ident)
@@ -47,7 +47,7 @@ def get_dir_size(directory, dir_name="/"):
         if type(value) == int:
             size += value
         else:
-            size += get_dir_size(value,name)
+            size += get_dir_size(value,dir_name+name+"/")
     dir_sizes[dir_name] = size
     return size
 
