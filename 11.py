@@ -1,8 +1,8 @@
 from collections import Counter, deque
 from copy import deepcopy
 from functools import reduce
-from math import log
 from operator import add, mul, sub, truediv
+from cProfile import run
 
 
 cur_monkey = []
@@ -31,9 +31,8 @@ with open("11-test.txt") as f:
                 try:
                     val = int(val)
                 except ValueError:
-                    assert op is mul
-                    op = pow
-                    val = 2
+                    op = mul
+                    val = None
                 cur_monkey.append((op,val))
             case 3:
                 line = line.replace("Test: divisible by ", "")
@@ -59,6 +58,8 @@ def get_activity(rounds,relief):
         for monkey_i, (items, (op, val), (test_div, true_monkey, false_monkey)) in enumerate(monkeys):
             for item in items:
                 activity[monkey_i] += 1
+                if val is None:
+                    val = item
                 item = op(item,val)
                 if relief:
                     item //= 3
@@ -72,4 +73,4 @@ def get_activity(rounds,relief):
     return reduce(mul, (times for monkey, times in activity.most_common(2)))
 
 print(get_activity(20,True))
-print(get_activity(20,False))
+run('get_activity(800,False)')
