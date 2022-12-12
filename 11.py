@@ -53,19 +53,21 @@ with open("11.txt") as f:
                 monkeys_start.append(cur_monkey)
                 cur_monkey = []
 
-for i, monkey in enumerate(monkeys_start):
-    monkey[0] = deque(ModNum(item,test_divs) for item in monkey[0])
 
 def get_activity(rounds,relief):
-    monkeys = deepcopy(monkeys_start)
+    monkeys = []
+    for items, *rest in monkeys_start:
+        items = deque(item if relief else ModNum(item,test_divs) for item in items)
+        monkeys.append([items, *rest])
     activity = Counter()
     for round in range(rounds):
         for monkey_i, (items, (op, val), (test_div, true_monkey, false_monkey)) in enumerate(monkeys):
             for item in items:
                 activity[monkey_i] += 1
-                item = item.do_op(op,val)
                 if relief:
-                    item = item.do_op(floordiv, 3)
+                    item = op(item,val) // 3
+                else:
+                    item = item.do_op(op,val)
                 if item % test_div == 0:
                     target_monkey = true_monkey
                 else:
